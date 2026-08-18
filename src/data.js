@@ -8,7 +8,7 @@ export const profile = {
   location: "Ho Chi Minh City, Vietnam",
   email: "phatnguyen03022001@gmail.com",
   github: "https://github.com/phatnguyen03022001",
-  linkedin: "https://www.linkedin.com/in/nguyentienphat/",
+  linkedin: "https://www.linkedin.com/in/phatnguyen03022001/",
   intro:
     "I build useful, reliable web applications with React, Node.js and modern web technologies.",
   currentFocus:

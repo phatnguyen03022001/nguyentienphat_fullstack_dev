@@ -1,20 +1,8 @@
-import { motion } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
 
 export function ProjectCard({ project, index, reduceMotion, onOpen }) {
   return (
-    <motion.article
-      className={`project-card project-card-${index + 1}`}
-      initial={reduceMotion ? false : "hidden"}
-      whileInView={reduceMotion ? undefined : "visible"}
-      viewport={{ once: true, amount: 0.15 }}
-      variants={fadeUp}
-    >
+    <article className={`project-card project-card-${index + 1} reveal-up`}>
       <div className="project-image-wrap">
         <img
           src={project.image}
@@ -42,6 +30,6 @@ export function ProjectCard({ project, index, reduceMotion, onOpen }) {
           </button>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }

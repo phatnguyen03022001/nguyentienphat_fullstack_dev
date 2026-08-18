@@ -124,7 +124,7 @@ export default function App() {
 
         <section className="section work-section" id="work" aria-labelledby="work-title">
           <SectionHeading eyebrow="01 / Selected work" title="Projects with real problems behind them." text="A small set of projects that show how I approach product work, frontend development and backend systems." titleId="work-title" />
-          <div className="project-grid">{projects.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} reduceMotion={reduceMotion} onOpen={(event) => openProject(project, event)} />)}</div>
+          <div className="project-grid">{projects.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} onOpen={(event) => openProject(project, event)} />)}</div>
         </section>
 
         <section className="section about-section" id="about" aria-labelledby="about-title">

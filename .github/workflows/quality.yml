@@ -19,12 +19,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
 
       - name: Install
-        run: npm install
+        run: npm install --ignore-scripts
 
       - name: Security audit
         run: npm audit --audit-level=high
+
+      - name: Portfolio contract
+        run: npm run verify
 
       - name: Build
         run: npm run build

@@ -83,10 +83,15 @@ jobs:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
         run: npx playwright test tests/visual.spec.js --update-snapshots
 
-      - name: Verify functional and accessibility gates
+      - name: Verify functional gates
         env:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
-        run: npx playwright test tests/portfolio.spec.js tests/a11y.spec.js
+        run: npx playwright test tests/portfolio.spec.js
+
+      - name: Verify accessibility gates
+        env:
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
+        run: npx playwright test tests/a11y.spec.js
 
       - name: Remove bootstrap workflow
         run: rm .github/workflows/one-time-quality-bootstrap.yml

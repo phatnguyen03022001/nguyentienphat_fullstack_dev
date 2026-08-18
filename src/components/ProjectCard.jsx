@@ -34,6 +34,7 @@ export function ProjectCard({ project, index, reduceMotion, onOpen }) {
           <button
             className="arrow-button"
             type="button"
+            data-project-trigger
             onClick={onOpen}
             aria-label={`Read case study for ${project.title}`}
           >

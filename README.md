@@ -20,6 +20,12 @@ The site focuses on three things:
 - Keyboard-friendly navigation
 - Reduced-motion support
 
+## Featured repositories
+
+- [Muse Portfolio](https://github.com/phatnguyen03022001/muse-portfolio) — reusable Next.js model portfolio with managed content, inquiry flow and owner-only admin.
+- [Elite Drive](https://github.com/phatnguyen03022001/elite-drive-demo-version) — full-stack car-rental marketplace with renter, owner and admin workflows.
+- [Spackie Question](https://github.com/phatnguyen03022001/spackie-question) — realtime chat application API with authentication, Pusher events and view-once image messages.
+
 ## Tech stack
 
 - React 19

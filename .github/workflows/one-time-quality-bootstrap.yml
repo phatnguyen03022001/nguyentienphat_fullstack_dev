@@ -1,6 +1,8 @@
 name: One-time quality bootstrap
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -27,13 +29,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
           registry-url: https://registry.npmjs.org
 
       - name: Generate lockfile
         run: npm install --package-lock-only --ignore-scripts
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
@@ -72,7 +75,12 @@ jobs:
       - name: Generate visual baselines
         env:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
-        run: npx playwright test tests/visual.spec.js --update-snapshots
+        run: npx playwright test tests/visual.spec.js --update-snapshots --project=chromium-1440
+
+      - name: Verify browser and accessibility gates
+        env:
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
+        run: npx playwright test tests/portfolio.spec.js tests/a11y.spec.js --project=chromium-1440
 
       - name: Switch CI to npm ci
         run: |
@@ -80,9 +88,6 @@ jobs:
           from pathlib import Path
 
           replacements = {
-              '.github/workflows/quality.yml': [
-                  ('npm install --ignore-scripts', 'npm ci --ignore-scripts'),
-              ],
               '.github/workflows/browser-quality.yml': [
                   ('npm install', 'npm ci'),
               ],

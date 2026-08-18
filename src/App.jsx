@@ -1,25 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import {
-  FiArrowDown,
-  FiArrowUpRight,
-  FiCheck,
-  FiCopy,
-  FiGithub,
-  FiLinkedin,
-  FiMail,
-  FiMoon,
-  FiSun,
-  FiX,
-} from "react-icons/fi";
-import {
-  education,
-  experience,
-  principles,
-  profile,
-  projects,
-  skills,
-} from "./data";
+import { motion, useReducedMotion } from "framer-motion";
+import { FiArrowDown, FiArrowUpRight, FiCheck, FiCopy, FiGithub, FiLinkedin, FiMail, FiMoon, FiSun, FiArrowUp } from "react-icons/fi";
+import { education, experience, principles, profile, projects, skills } from "./data";
+import { SectionHeading } from "./components/SectionHeading";
+import { ProjectCard } from "./components/ProjectCard";
+import { CaseStudyModal } from "./components/CaseStudyModal";
 import cv from "./files/NguyenTienPhat_Fresher_Fullstack_Developer.pdf";
 import avatar from "./images/avatar/avt.jpg";
 import "./styles.css";
@@ -27,45 +12,19 @@ import "./accessibility.css";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.55, ease: "easeOut" },
-  },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 };
 
-function SectionHeading({ eyebrow, title, text, titleId }) {
-  return (
-    <div className="section-heading">
-      <p className="eyebrow">{eyebrow}</p>
-      <h2 id={titleId}>{title}</h2>
-      {text && <p className="section-lead">{text}</p>}
-    </div>
-  );
-}
-
-function App() {
-  const shouldReduceMotion = useReducedMotion();
+export default function App() {
+  const reduceMotion = useReducedMotion();
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem("theme");
-    return saved
-      ? saved === "dark"
-      : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    return saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
   const [activeProject, setActiveProject] = useState(null);
   const [copied, setCopied] = useState(false);
   const modalCloseRef = useRef(null);
   const lastFocusedRef = useRef(null);
-
-  const openProject = (project, event) => {
-    lastFocusedRef.current = event.currentTarget;
-    setActiveProject(project);
-  };
-
-  const closeProject = () => {
-    setActiveProject(null);
-    window.setTimeout(() => lastFocusedRef.current?.focus(), 0);
-  };
 
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
@@ -87,16 +46,11 @@ function App() {
         closeProject();
         return;
       }
-
       if (event.key !== "Tab") return;
       const dialog = document.querySelector("[data-case-dialog]");
       if (!dialog) return;
-
-      const focusable = dialog.querySelectorAll(
-        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      );
+      const focusable = dialog.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
       if (!focusable.length) return;
-
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (event.shiftKey && document.activeElement === first) {
@@ -115,6 +69,16 @@ function App() {
     };
   }, [activeProject]);
 
+  const openProject = (project, event) => {
+    lastFocusedRef.current = event.currentTarget;
+    setActiveProject(project);
+  };
+
+  const closeProject = () => {
+    setActiveProject(null);
+    window.setTimeout(() => lastFocusedRef.current?.focus(), 0);
+  };
+
   const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(profile.email);
@@ -130,272 +94,70 @@ function App() {
       <a className="skip-link" href="#main">Skip to content</a>
 
       <header className="topbar">
-        <a className="brand" href="#top" aria-label="Nguyen Tien Phat home">
-          <span className="brand-mark">NP</span>
-          <span>{profile.name}</span>
-        </a>
-        <nav className="desktop-nav" aria-label="Main navigation">
-          <a href="#work">Work</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-        </nav>
+        <a className="brand" href="#top" aria-label="Nguyen Tien Phat home"><span className="brand-mark">NP</span><span>{profile.name}</span></a>
+        <nav className="desktop-nav" aria-label="Main navigation"><a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
         <div className="topbar-actions">
-          <a className="text-link" href={profile.github} target="_blank" rel="noreferrer">
-            GitHub <FiArrowUpRight aria-hidden="true" />
-          </a>
-          <button
-            className="icon-button"
-            type="button"
-            onClick={() => setDark((value) => !value)}
-            aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
-            title={dark ? "Light theme" : "Dark theme"}
-          >
-            {dark ? <FiSun aria-hidden="true" /> : <FiMoon aria-hidden="true" />}
-          </button>
+          <a className="text-link" href={profile.github} target="_blank" rel="noreferrer">GitHub <FiArrowUpRight aria-hidden="true" /></a>
+          <button className="icon-button" type="button" onClick={() => setDark((value) => !value)} aria-label={dark ? "Switch to light theme" : "Switch to dark theme"} title={dark ? "Light theme" : "Dark theme"}>{dark ? <FiSun aria-hidden="true" /> : <FiMoon aria-hidden="true" />}</button>
         </div>
       </header>
 
       <main id="main" tabIndex="-1">
         <section className="hero section" id="top" aria-labelledby="hero-title">
           <div className="hero-grid">
-            <motion.div
-              className="hero-copy"
-              initial={shouldReduceMotion ? false : "hidden"}
-              animate={shouldReduceMotion ? false : "visible"}
-              variants={fadeUp}
-            >
-              <p className="status">
-                <span className="status-dot" aria-hidden="true" /> Available for opportunities
-              </p>
+            <motion.div className="hero-copy" initial={reduceMotion ? false : "hidden"} animate={reduceMotion ? false : "visible"} variants={fadeUp}>
+              <p className="status"><span className="status-dot" aria-hidden="true" /> Available for opportunities</p>
               <p className="eyebrow">{profile.role} · {profile.location}</p>
               <h1 id="hero-title">Building useful products with <span>clear code.</span></h1>
               <p className="hero-lead">{profile.intro}</p>
-              <div className="hero-actions">
-                <a className="button button-primary" href="#work">
-                  View my work <FiArrowDown aria-hidden="true" />
-                </a>
-                <a className="button button-secondary" href={`mailto:${profile.email}`}>
-                  Let&apos;s talk <FiMail aria-hidden="true" />
-                </a>
-              </div>
-              <div className="hero-proof" aria-label="Portfolio highlights">
-                <div><strong>{projects.length}</strong><span>Selected projects</span></div>
-                <div><strong>Full-stack</strong><span>Frontend + backend</span></div>
-                <div><strong>2019 — 2024</strong><span>Education</span></div>
-              </div>
+              <div className="hero-actions"><a className="button button-primary" href="#work">View my work <FiArrowDown aria-hidden="true" /></a><a className="button button-secondary" href={`mailto:${profile.email}`}>Let&apos;s talk <FiMail aria-hidden="true" /></a></div>
+              <div className="hero-proof" aria-label="Portfolio highlights"><div><strong>{projects.length}</strong><span>Selected projects</span></div><div><strong>Full-stack</strong><span>Frontend + backend</span></div><div><strong>{education[0]?.period}</strong><span>Education</span></div></div>
             </motion.div>
-
-            <motion.aside
-              className="hero-card"
-              initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.97 }}
-              animate={shouldReduceMotion ? false : { opacity: 1, scale: 1 }}
-              transition={shouldReduceMotion ? undefined : { duration: 0.65, delay: 0.15 }}
-              aria-label="Quick profile"
-            >
-              <div className="portrait-wrap">
-                <img src={avatar} alt={profile.name} className="portrait" />
-                <span className="portrait-fallback" aria-hidden="true">NP</span>
-              </div>
-              <div className="hero-card-body">
-                <p className="card-label">Currently focused on</p>
-                <h2>{profile.currentFocus}</h2>
-                <div className="tag-list">
-                  {skills.slice(0, 5).map((skill) => <span key={skill}>{skill}</span>)}
-                </div>
-              </div>
+            <motion.aside className="hero-card" initial={reduceMotion ? false : { opacity: 0, scale: 0.97 }} animate={reduceMotion ? false : { opacity: 1, scale: 1 }} transition={reduceMotion ? undefined : { duration: 0.65, delay: 0.15 }} aria-label="Quick profile">
+              <div className="portrait-wrap"><img src={avatar} alt={profile.name} className="portrait" /><span className="portrait-fallback" aria-hidden="true">NP</span></div>
+              <div className="hero-card-body"><p className="card-label">Currently focused on</p><h2>{profile.currentFocus}</h2><div className="tag-list">{skills.slice(0, 5).map((skill) => <span key={skill}>{skill}</span>)}</div></div>
             </motion.aside>
           </div>
           <a className="scroll-cue" href="#work">Scroll to explore <FiArrowDown aria-hidden="true" /></a>
         </section>
 
         <section className="section work-section" id="work" aria-labelledby="work-title">
-          <SectionHeading
-            eyebrow="01 / Selected work"
-            title="Projects with real problems behind them."
-            text="A small set of projects that show how I approach product work, frontend development and backend systems."
-            titleId="work-title"
-          />
-          <div className="project-grid">
-            {projects.map((project, index) => (
-              <motion.article
-                className={`project-card project-card-${index + 1}`}
-                key={project.slug}
-                initial={shouldReduceMotion ? false : "hidden"}
-                whileInView={shouldReduceMotion ? undefined : "visible"}
-                viewport={{ once: true, amount: 0.15 }}
-                variants={fadeUp}
-              >
-                <div className="project-image-wrap">
-                  <img
-                    src={project.image}
-                    alt={`${project.title} project preview`}
-                    className="project-image"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className="project-number" aria-hidden="true">0{index + 1}</span>
-                </div>
-                <div className="project-body">
-                  <div className="project-meta"><span>{project.year}</span><span>{project.tag}</span></div>
-                  <h3>{project.title}</h3>
-                  <p>{project.summary}</p>
-                  <div className="project-footer">
-                    <div className="stack-list">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
-                    <button
-                      className="arrow-button"
-                      type="button"
-                      onClick={(event) => openProject(project, event)}
-                      aria-label={`Read case study for ${project.title}`}
-                    >
-                      <FiArrowUpRight aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-          </div>
+          <SectionHeading eyebrow="01 / Selected work" title="Projects with real problems behind them." text="A small set of projects that show how I approach product work, frontend development and backend systems." titleId="work-title" />
+          <div className="project-grid">{projects.map((project, index) => <ProjectCard key={project.slug} project={project} index={index} reduceMotion={reduceMotion} onOpen={(event) => openProject(project, event)} />)}</div>
         </section>
 
         <section className="section about-section" id="about" aria-labelledby="about-title">
           <div className="about-grid">
-            <SectionHeading
-              eyebrow="02 / About"
-              title="I care about useful work, not just more code."
-              titleId="about-title"
-            />
+            <SectionHeading eyebrow="02 / About" title="I care about useful work, not just more code." titleId="about-title" />
             <div className="about-copy">
               <p>I am a full-stack developer based in Ho Chi Minh City. I enjoy turning ideas into practical web applications and understanding how each part of a product works together.</p>
               <p>My project work covers React, Node.js, Express, MongoDB, MySQL and real-time communication with Socket.io. I prefer clear interfaces, small abstractions and solutions that are easy to explain.</p>
-              <div className="principles">
-                {principles.map((principle, index) => (
-                  <div key={principle.title}>
-                    <span>0{index + 1}</span>
-                    <strong>{principle.title}</strong>
-                    <p>{principle.description}</p>
-                  </div>
-                ))}
-              </div>
+              <div className="principles">{principles.map((principle, index) => <div key={principle.title}><span>0{index + 1}</span><strong>{principle.title}</strong><p>{principle.description}</p></div>)}</div>
             </div>
           </div>
-
           <div className="experience-grid">
-            <div>
-              <p className="eyebrow">Experience</p>
-              {experience.map((item) => (
-                <div className="timeline-item" key={`${item.company}-${item.period}`}>
-                  <div><strong>{item.title}</strong><span>{item.period}</span></div>
-                  <p>{item.company} · {item.description}</p>
-                </div>
-              ))}
-            </div>
-            <div>
-              <p className="eyebrow">Education</p>
-              {education.map((item) => (
-                <div className="timeline-item" key={`${item.school}-${item.period}`}>
-                  <div><strong>{item.title}</strong><span>{item.period}</span></div>
-                  <p>{item.school} · {item.description}</p>
-                </div>
-              ))}
-            </div>
+            <div><p className="eyebrow">Experience</p>{experience.map((item) => <div className="timeline-item" key={`${item.company}-${item.period}`}><div><strong>{item.title}</strong><span>{item.period}</span></div><p>{item.company} · {item.description}</p></div>)}</div>
+            <div><p className="eyebrow">Education</p>{education.map((item) => <div className="timeline-item" key={`${item.school}-${item.period}`}><div><strong>{item.title}</strong><span>{item.period}</span></div><p>{item.school} · {item.description}</p></div>)}</div>
           </div>
         </section>
 
         <section className="section skills-section" aria-labelledby="skills-title">
-          <div className="skills-header">
-            <div><p className="eyebrow">03 / Tools</p><h2 id="skills-title">Tools I work with.</h2></div>
-            <p>I choose tools based on the problem, project size and long-term simplicity.</p>
-          </div>
+          <div className="skills-header"><div><p className="eyebrow">03 / Tools</p><h2 id="skills-title">Tools I work with.</h2></div><p>I choose tools based on the problem, project size and long-term simplicity.</p></div>
           <div className="skills-grid">{skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
         </section>
 
         <section className="section contact-section" id="contact" aria-labelledby="contact-title">
           <div className="contact-card">
-            <div>
-              <p className="eyebrow">04 / Contact</p>
-              <h2 id="contact-title">Have a project in mind?</h2>
-              <p>Tell me what you are building, what you need help with, or simply say hello.</p>
-            </div>
-            <div className="contact-actions">
-              <a className="button button-primary" href={`mailto:${profile.email}`}>Email me <FiMail aria-hidden="true" /></a>
-              <button className="button button-secondary" type="button" onClick={copyEmail} aria-live="polite">
-                {copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />} {copied ? "Copied" : "Copy email"}
-              </button>
-            </div>
-            <div className="contact-links">
-              <a href={profile.linkedin} target="_blank" rel="noreferrer"><FiLinkedin aria-hidden="true" /> LinkedIn <FiArrowUpRight aria-hidden="true" /></a>
-              <a href={profile.github} target="_blank" rel="noreferrer"><FiGithub aria-hidden="true" /> GitHub <FiArrowUpRight aria-hidden="true" /></a>
-              <a href={cv} target="_blank" rel="noreferrer"><FiArrowUpRight aria-hidden="true" /> View CV</a>
-            </div>
+            <div><p className="eyebrow">04 / Contact</p><h2 id="contact-title">Have a project in mind?</h2><p>Tell me what you are building, what you need help with, or simply say hello.</p></div>
+            <div className="contact-actions"><a className="button button-primary" href={`mailto:${profile.email}`}>Email me <FiMail aria-hidden="true" /></a><button className="button button-secondary" type="button" onClick={copyEmail} aria-live="polite">{copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />} {copied ? "Copied" : "Copy email"}</button></div>
+            <div className="contact-links"><a href={profile.linkedin} target="_blank" rel="noreferrer"><FiLinkedin aria-hidden="true" /> LinkedIn <FiArrowUpRight aria-hidden="true" /></a><a href={profile.github} target="_blank" rel="noreferrer"><FiGithub aria-hidden="true" /> GitHub <FiArrowUpRight aria-hidden="true" /></a><a href={cv} target="_blank" rel="noreferrer"><FiArrowUpRight aria-hidden="true" /> View CV</a></div>
           </div>
         </section>
       </main>
 
-      <footer className="footer">
-        <span>© {new Date().getFullYear()} Nguyen Tien Phat</span>
-        <span>Built with React + Vite</span>
-        <a href="#top" aria-label="Back to top"><FiArrowUp aria-hidden="true" /></a>
-      </footer>
+      <footer className="footer"><span>© {new Date().getFullYear()} Nguyen Tien Phat</span><span>Built with React + Vite</span><a href="#top" aria-label="Back to top"><FiArrowUp aria-hidden="true" /></a></footer>
 
-      <AnimatePresence>
-        {activeProject && (
-          <motion.div
-            className="modal-backdrop"
-            initial={shouldReduceMotion ? false : { opacity: 0 }}
-            animate={shouldReduceMotion ? false : { opacity: 1 }}
-            exit={shouldReduceMotion ? undefined : { opacity: 0 }}
-            onMouseDown={(event) => {
-              if (event.target === event.currentTarget) closeProject();
-            }}
-          >
-            <motion.div
-              className="case-study"
-              data-case-dialog
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="case-title"
-              tabIndex="-1"
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-              animate={shouldReduceMotion ? false : { opacity: 1, y: 0 }}
-              exit={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
-            >
-              <button ref={modalCloseRef} className="modal-close" type="button" onClick={closeProject} aria-label="Close case study">
-                <FiX aria-hidden="true" />
-              </button>
-              <img src={activeProject.image} alt="" className="case-image" loading="eager" decoding="async" />
-              <div className="case-content">
-                <div className="project-meta"><span>{activeProject.year}</span><span>{activeProject.tag}</span></div>
-                <h2 id="case-title">{activeProject.title}</h2>
-                <p className="case-summary">{activeProject.summary}</p>
-
-                <div className="case-columns">
-                  <div><p className="eyebrow">The problem</p><p>{activeProject.problem}</p></div>
-                  <div><p className="eyebrow">My role</p><p>{activeProject.role}</p></div>
-                  <div><p className="eyebrow">What I built</p><p>{activeProject.solution}</p></div>
-                </div>
-
-                <div className="case-decision">
-                  <p className="eyebrow">Key decisions</p>
-                  <ul>{activeProject.decisions.map((decision) => <li key={decision}>{decision}</li>)}</ul>
-                </div>
-
-                <div className="case-proof">
-                  <p className="eyebrow">Proof</p>
-                  <div className="tag-list">
-                    {activeProject.evidence.map((item) => <span key={item}>{item}</span>)}
-                  </div>
-                </div>
-
-                <div className="case-actions">
-                  <a className="button button-primary" href={activeProject.demo} target="_blank" rel="noreferrer">Live demo <FiArrowUpRight aria-hidden="true" /></a>
-                  <a className="button button-secondary" href={activeProject.github} target="_blank" rel="noreferrer"><FiGithub aria-hidden="true" /> Source code</a>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <CaseStudyModal project={activeProject} reduceMotion={reduceMotion} closeProject={closeProject} closeRef={modalCloseRef} />
     </div>
   );
 }
-
-export default App;

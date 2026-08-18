@@ -22,7 +22,7 @@ The site focuses on three things:
 
 ## Featured repositories
 
-- [Muse Portfolio](https://github.com/phatnguyen03022001/muse-portfolio) — reusable Next.js model portfolio with managed content, inquiry flow and owner-only admin. The source repository is private; production and project documentation are available as portfolio evidence.
+- **Muse Portfolio** ([production](https://muse-portfolio-seven.vercel.app/)) — reusable Next.js model portfolio with managed content, inquiry flow and owner-only admin. The source repository is private and available on request.
 - [Elite Drive](https://github.com/phatnguyen03022001/elite-drive-demo-version) — full-stack car-rental marketplace with renter, owner and admin workflows.
 - [Spackie Question](https://github.com/phatnguyen03022001/spackie-question) — realtime chat application API with authentication, Pusher events and view-once image messages.
 

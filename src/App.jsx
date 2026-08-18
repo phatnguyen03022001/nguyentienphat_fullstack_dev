@@ -16,6 +16,7 @@ import { profile, projects, skills } from "./data";
 import cv from "./files/NguyenTienPhat_Fresher_Fullstack_Developer.pdf";
 import avatar from "./images/avatar/avt.jpg";
 import "./styles.css";
+import "./accessibility.css";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -111,10 +112,6 @@ function App() {
     }
   };
 
-  const motionProps = shouldReduceMotion
-    ? { initial: false, animate: false }
-    : { initial: "hidden", animate: "visible", variants: fadeUp };
-
   return (
     <div className="site-shell">
       <a className="skip-link" href="#main">Skip to content</a>
@@ -124,24 +121,12 @@ function App() {
           <span className="brand-mark">NP</span>
           <span>{profile.name}</span>
         </a>
-
         <nav className="desktop-nav" aria-label="Main navigation">
-          <a href="#work">Work</a>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+          <a href="#work">Work</a><a href="#about">About</a><a href="#contact">Contact</a>
         </nav>
-
         <div className="topbar-actions">
-          <a className="text-link" href={profile.github} target="_blank" rel="noreferrer">
-            GitHub <FiArrowUpRight aria-hidden="true" />
-          </a>
-          <button
-            className="icon-button"
-            type="button"
-            onClick={() => setDark((value) => !value)}
-            aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
-            title={dark ? "Light theme" : "Dark theme"}
-          >
+          <a className="text-link" href={profile.github} target="_blank" rel="noreferrer">GitHub <FiArrowUpRight aria-hidden="true" /></a>
+          <button className="icon-button" type="button" onClick={() => setDark((value) => !value)} aria-label={dark ? "Switch to light theme" : "Switch to dark theme"} title={dark ? "Light theme" : "Dark theme"}>
             {dark ? <FiSun aria-hidden="true" /> : <FiMoon aria-hidden="true" />}
           </button>
         </div>
@@ -150,7 +135,7 @@ function App() {
       <main id="main" tabIndex="-1">
         <section className="hero section" id="top" aria-labelledby="hero-title">
           <div className="hero-grid">
-            <motion.div className="hero-copy" {...motionProps}>
+            <motion.div className="hero-copy" initial={shouldReduceMotion ? false : "hidden"} animate={shouldReduceMotion ? false : "visible"} variants={fadeUp}>
               <p className="status"><span className="status-dot" aria-hidden="true" /> Available for opportunities</p>
               <p className="eyebrow">Full-stack developer · Ho Chi Minh City</p>
               <h1 id="hero-title">Building useful products with <span>clear code.</span></h1>
@@ -166,71 +151,24 @@ function App() {
               </div>
             </motion.div>
 
-            <motion.aside
-              className="hero-card"
-              initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.97 }}
-              animate={shouldReduceMotion ? false : { opacity: 1, scale: 1 }}
-              transition={shouldReduceMotion ? undefined : { duration: 0.65, delay: 0.15 }}
-              aria-label="Quick profile"
-            >
-              <div className="portrait-wrap">
-                <img src={avatar} alt="Nguyen Tien Phat" className="portrait" />
-                <span className="portrait-fallback" aria-hidden="true">NP</span>
-              </div>
-              <div className="hero-card-body">
-                <p className="card-label">Currently focused on</p>
-                <h2>Web applications that are simple to use and easy to maintain.</h2>
-                <div className="tag-list">
-                  {skills.slice(0, 5).map((skill) => <span key={skill}>{skill}</span>)}
-                </div>
-              </div>
+            <motion.aside className="hero-card" initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.97 }} animate={shouldReduceMotion ? false : { opacity: 1, scale: 1 }} transition={shouldReduceMotion ? undefined : { duration: 0.65, delay: 0.15 }} aria-label="Quick profile">
+              <div className="portrait-wrap"><img src={avatar} alt="Nguyen Tien Phat" className="portrait" /><span className="portrait-fallback" aria-hidden="true">NP</span></div>
+              <div className="hero-card-body"><p className="card-label">Currently focused on</p><h2>Web applications that are simple to use and easy to maintain.</h2><div className="tag-list">{skills.slice(0, 5).map((skill) => <span key={skill}>{skill}</span>)}</div></div>
             </motion.aside>
           </div>
           <a className="scroll-cue" href="#work">Scroll to explore <FiArrowDown aria-hidden="true" /></a>
         </section>
 
         <section className="section work-section" id="work" aria-labelledby="work-title">
-          <SectionHeading
-            eyebrow="01 / Selected work"
-            title="Projects with real problems behind them."
-            text="A small set of projects that show how I approach product work, frontend development and backend systems."
-            titleId="work-title"
-          />
+          <SectionHeading eyebrow="01 / Selected work" title="Projects with real problems behind them." text="A small set of projects that show how I approach product work, frontend development and backend systems." titleId="work-title" />
           <div className="project-grid">
             {projects.map((project, index) => (
-              <motion.article
-                className={`project-card project-card-${index + 1}`}
-                key={project.slug}
-                initial={shouldReduceMotion ? false : "hidden"}
-                whileInView={shouldReduceMotion ? undefined : "visible"}
-                viewport={{ once: true, amount: 0.15 }}
-                variants={fadeUp}
-              >
-                <div className="project-image-wrap">
-                  <img
-                    src={project.image}
-                    alt={`${project.title} project preview`}
-                    className="project-image"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className="project-number" aria-hidden="true">0{index + 1}</span>
-                </div>
+              <motion.article className={`project-card project-card-${index + 1}`} key={project.slug} initial={shouldReduceMotion ? false : "hidden"} whileInView={shouldReduceMotion ? undefined : "visible"} viewport={{ once: true, amount: 0.15 }} variants={fadeUp}>
+                <div className="project-image-wrap"><img src={project.image} alt={`${project.title} project preview`} className="project-image" loading="lazy" decoding="async" /><span className="project-number" aria-hidden="true">0{index + 1}</span></div>
                 <div className="project-body">
                   <div className="project-meta"><span>{project.year}</span><span>{project.tag}</span></div>
-                  <h3>{project.title}</h3>
-                  <p>{project.summary}</p>
-                  <div className="project-footer">
-                    <div className="stack-list">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
-                    <button
-                      className="arrow-button"
-                      type="button"
-                      onClick={(event) => openProject(project, event)}
-                      aria-label={`Read case study for ${project.title}`}
-                    >
-                      <FiArrowUpRight aria-hidden="true" />
-                    </button>
-                  </div>
+                  <h3>{project.title}</h3><p>{project.summary}</p>
+                  <div className="project-footer"><div className="stack-list">{project.stack.map((item) => <span key={item}>{item}</span>)}</div><button className="arrow-button" type="button" onClick={(event) => openProject(project, event)} aria-label={`Read case study for ${project.title}`}><FiArrowUpRight aria-hidden="true" /></button></div>
                 </div>
               </motion.article>
             ))}
@@ -243,108 +181,44 @@ function App() {
             <div className="about-copy">
               <p>I am a full-stack developer based in Ho Chi Minh City. I enjoy turning ideas into practical web applications and learning how each part of a product works together.</p>
               <p>My strongest experience comes from building projects with React, Node.js, Express, MongoDB and MySQL. I like simple architecture, clear interfaces and solutions that are easy to explain.</p>
-              <div className="principles">
-                <div><span>01</span><strong>Understand first</strong><p>I start with the problem and the people using the product.</p></div>
-                <div><span>02</span><strong>Keep it clear</strong><p>I prefer small, understandable solutions over unnecessary complexity.</p></div>
-                <div><span>03</span><strong>Keep improving</strong><p>I test, review and improve the work instead of treating the first version as final.</p></div>
-              </div>
+              <div className="principles"><div><span>01</span><strong>Understand first</strong><p>I start with the problem and the people using the product.</p></div><div><span>02</span><strong>Keep it clear</strong><p>I prefer small, understandable solutions over unnecessary complexity.</p></div><div><span>03</span><strong>Keep improving</strong><p>I test, review and improve the work instead of treating the first version as final.</p></div></div>
             </div>
           </div>
-
           <div className="experience-grid">
-            <div>
-              <p className="eyebrow">Experience</p>
-              <div className="timeline-item">
-                <div><strong>Software Engineering Intern</strong><span>04 — 06 / 2024</span></div>
-                <p>MiuTech Company · Worked on real-world web development tasks and applied full-stack skills in a team environment.</p>
-              </div>
-            </div>
-            <div>
-              <p className="eyebrow">Education</p>
-              <div className="timeline-item">
-                <div><strong>Software Engineering</strong><span>2019 — 2024</span></div>
-                <p>Ton Duc Thang University · Built a strong foundation through software projects and practical development work.</p>
-              </div>
-            </div>
+            <div><p className="eyebrow">Experience</p><div className="timeline-item"><div><strong>Software Engineering Intern</strong><span>04 — 06 / 2024</span></div><p>MiuTech Company · Worked on real-world web development tasks and applied full-stack skills in a team environment.</p></div></div>
+            <div><p className="eyebrow">Education</p><div className="timeline-item"><div><strong>Software Engineering</strong><span>2019 — 2024</span></div><p>Ton Duc Thang University · Built a strong foundation through software projects and practical development work.</p></div></div>
           </div>
         </section>
 
         <section className="section skills-section" aria-labelledby="skills-title">
-          <div className="skills-header">
-            <div><p className="eyebrow">03 / Tools</p><h2 id="skills-title">Tools I work with.</h2></div>
-            <p>I choose tools based on the problem, project size and long-term simplicity.</p>
-          </div>
+          <div className="skills-header"><div><p className="eyebrow">03 / Tools</p><h2 id="skills-title">Tools I work with.</h2></div><p>I choose tools based on the problem, project size and long-term simplicity.</p></div>
           <div className="skills-grid">{skills.map((skill) => <span key={skill}>{skill}</span>)}</div>
         </section>
 
         <section className="section contact-section" id="contact" aria-labelledby="contact-title">
           <div className="contact-card">
-            <div>
-              <p className="eyebrow">04 / Contact</p>
-              <h2 id="contact-title">Have a project in mind?</h2>
-              <p>Tell me what you are building, what you need help with, or simply say hello.</p>
-            </div>
-            <div className="contact-actions">
-              <a className="button button-primary" href={`mailto:${profile.email}`}>Email me <FiMail aria-hidden="true" /></a>
-              <button className="button button-secondary" type="button" onClick={copyEmail} aria-live="polite">
-                {copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />} {copied ? "Copied" : "Copy email"}
-              </button>
-            </div>
-            <div className="contact-links">
-              <a href={profile.linkedin} target="_blank" rel="noreferrer"><FiLinkedin aria-hidden="true" /> LinkedIn <FiArrowUpRight aria-hidden="true" /></a>
-              <a href={profile.github} target="_blank" rel="noreferrer"><FiGithub aria-hidden="true" /> GitHub <FiArrowUpRight aria-hidden="true" /></a>
-              <a href={cv} target="_blank" rel="noreferrer"><FiArrowUpRight aria-hidden="true" /> View CV</a>
-            </div>
+            <div><p className="eyebrow">04 / Contact</p><h2 id="contact-title">Have a project in mind?</h2><p>Tell me what you are building, what you need help with, or simply say hello.</p></div>
+            <div className="contact-actions"><a className="button button-primary" href={`mailto:${profile.email}`}>Email me <FiMail aria-hidden="true" /></a><button className="button button-secondary" type="button" onClick={copyEmail} aria-live="polite">{copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />} {copied ? "Copied" : "Copy email"}</button></div>
+            <div className="contact-links"><a href={profile.linkedin} target="_blank" rel="noreferrer"><FiLinkedin aria-hidden="true" /> LinkedIn <FiArrowUpRight aria-hidden="true" /></a><a href={profile.github} target="_blank" rel="noreferrer"><FiGithub aria-hidden="true" /> GitHub <FiArrowUpRight aria-hidden="true" /></a><a href={cv} target="_blank" rel="noreferrer"><FiArrowUpRight aria-hidden="true" /> View CV</a></div>
           </div>
         </section>
       </main>
 
-      <footer className="footer">
-        <span>© {new Date().getFullYear()} Nguyen Tien Phat</span>
-        <span>Built with React + Vite</span>
-        <a href="#top" aria-label="Back to top"><FiArrowUp aria-hidden="true" /></a>
-      </footer>
+      <footer className="footer"><span>© {new Date().getFullYear()} Nguyen Tien Phat</span><span>Built with React + Vite</span><a href="#top" aria-label="Back to top"><FiArrowUp aria-hidden="true" /></a></footer>
 
       <AnimatePresence>
         {activeProject && (
-          <motion.div
-            className="modal-backdrop"
-            initial={shouldReduceMotion ? false : { opacity: 0 }}
-            animate={shouldReduceMotion ? false : { opacity: 1 }}
-            exit={shouldReduceMotion ? undefined : { opacity: 0 }}
-            onMouseDown={(event) => {
-              if (event.target === event.currentTarget) closeProject();
-            }}
-          >
-            <motion.div
-              className="case-study"
-              data-case-dialog
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="case-title"
-              tabIndex="-1"
-              initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }}
-              animate={shouldReduceMotion ? false : { opacity: 1, y: 0 }}
-              exit={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}
-            >
-              <button ref={modalCloseRef} className="modal-close" type="button" onClick={closeProject} aria-label="Close case study">
-                <FiX aria-hidden="true" />
-              </button>
+          <motion.div className="modal-backdrop" initial={shouldReduceMotion ? false : { opacity: 0 }} animate={shouldReduceMotion ? false : { opacity: 1 }} exit={shouldReduceMotion ? undefined : { opacity: 0 }} onMouseDown={(event) => { if (event.target === event.currentTarget) closeProject(); }}>
+            <motion.div className="case-study" data-case-dialog role="dialog" aria-modal="true" aria-labelledby="case-title" tabIndex="-1" initial={shouldReduceMotion ? false : { opacity: 0, y: 20 }} animate={shouldReduceMotion ? false : { opacity: 1, y: 0 }} exit={shouldReduceMotion ? undefined : { opacity: 0, y: 20 }}>
+              <button ref={modalCloseRef} className="modal-close" type="button" onClick={closeProject} aria-label="Close case study"><FiX aria-hidden="true" /></button>
               <img src={activeProject.image} alt="" className="case-image" loading="eager" decoding="async" />
               <div className="case-content">
                 <div className="project-meta"><span>{activeProject.year}</span><span>{activeProject.tag}</span></div>
                 <h2 id="case-title">{activeProject.title}</h2>
                 <p className="case-summary">{activeProject.summary}</p>
-                <div className="case-columns">
-                  <div><p className="eyebrow">The problem</p><p>{activeProject.problem}</p></div>
-                  <div><p className="eyebrow">My role</p><p>{activeProject.role}</p></div>
-                  <div><p className="eyebrow">What I built</p><p>{activeProject.solution}</p></div>
-                </div>
+                <div className="case-columns"><div><p className="eyebrow">The problem</p><p>{activeProject.problem}</p></div><div><p className="eyebrow">My role</p><p>{activeProject.role}</p></div><div><p className="eyebrow">What I built</p><p>{activeProject.solution}</p></div></div>
                 <div className="case-decision"><p className="eyebrow">Key decisions</p><ul>{activeProject.decisions.map((decision) => <li key={decision}>{decision}</li>)}</ul></div>
-                <div className="case-actions">
-                  <a className="button button-primary" href={activeProject.demo} target="_blank" rel="noreferrer">Live demo <FiArrowUpRight aria-hidden="true" /></a>
-                  <a className="button button-secondary" href={activeProject.github} target="_blank" rel="noreferrer"><FiGithub aria-hidden="true" /> Source code</a>
-                </div>
+                <div className="case-actions"><a className="button button-primary" href={activeProject.demo} target="_blank" rel="noreferrer">Live demo <FiArrowUpRight aria-hidden="true" /></a><a className="button button-secondary" href={activeProject.github} target="_blank" rel="noreferrer"><FiGithub aria-hidden="true" /> Source code</a></div>
               </div>
             </motion.div>
           </motion.div>

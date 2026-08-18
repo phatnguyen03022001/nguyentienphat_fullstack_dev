@@ -22,7 +22,7 @@ The site focuses on three things:
 
 ## Featured repositories
 
-- [Muse Portfolio](https://github.com/phatnguyen03022001/muse-portfolio) — reusable Next.js model portfolio with managed content, inquiry flow and owner-only admin.
+- [Muse Portfolio](https://github.com/phatnguyen03022001/muse-portfolio) — reusable Next.js model portfolio with managed content, inquiry flow and owner-only admin. The source repository is private; production and project documentation are available as portfolio evidence.
 - [Elite Drive](https://github.com/phatnguyen03022001/elite-drive-demo-version) — full-stack car-rental marketplace with renter, owner and admin workflows.
 - [Spackie Question](https://github.com/phatnguyen03022001/spackie-question) — realtime chat application API with authentication, Pusher events and view-once image messages.
 
@@ -30,7 +30,6 @@ The site focuses on three things:
 
 - React 19
 - Vite 8
-- Framer Motion
 - React Icons
 - CSS with a small design system
 
@@ -49,7 +48,7 @@ src/
 ## Run locally
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
@@ -61,7 +60,7 @@ npm run build
 
 ## Deployment
 
-The project is deployed through Vercel from the `main` branch. The Vercel project and deployment setup are intentionally kept unchanged while the application code is updated.
+The project is deployed through Vercel from the `main` branch. Release verification should be tied to the deployed commit before a change is considered production-ready.
 
 ## Design principles
 
@@ -71,7 +70,7 @@ The site should be easy to understand without advanced technical language.
 
 ### Show real work
 
-Project claims should connect to a live demo, source code or a clear project explanation.
+Project claims should connect to a live demo, source code, private-source disclosure or a clear project explanation.
 
 ### Use motion with a reason
 

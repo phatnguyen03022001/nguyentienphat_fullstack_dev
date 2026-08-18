@@ -11,7 +11,7 @@ permissions:
 jobs:
   browser:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,10 +28,37 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
 
-      - name: Run browser tests
+      - name: Build
+        run: npm run build
+
+      - name: Start preview
+        run: |
+          npm run preview -- --host 127.0.0.1 > /tmp/portfolio-preview.log 2>&1 &
+          node - <<'NODE'
+          const url = 'http://127.0.0.1:4173/';
+          const deadline = Date.now() + 30000;
+          const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+          while (Date.now() < deadline) {
+            try {
+              const response = await fetch(url);
+              if (response.ok) process.exit(0);
+            } catch {}
+            await sleep(500);
+          }
+          console.error('Preview server did not become ready.');
+          process.exit(1);
+          NODE
+
+      - name: Run functional and accessibility tests
         env:
-          PLAYWRIGHT_BASE_URL: https://ntp-portfolio-neon.vercel.app/
-        run: npx playwright test
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
+        run: npx playwright test tests/portfolio.spec.js tests/a11y.spec.js
+
+      - name: Run visual regression when baselines exist
+        if: ${{ hashFiles('tests/**-snapshots/*') != '' }}
+        env:
+          PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
+        run: npx playwright test tests/visual.spec.js
 
       - name: Upload Playwright report
         if: always()
@@ -41,13 +68,37 @@ jobs:
           path: playwright-report/
           if-no-files-found: ignore
 
-      - name: Upload visual evidence
+      - name: Upload test evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: visual-evidence
+          name: playwright-test-results
           path: test-results/
           if-no-files-found: ignore
+
+  production-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Install
+        run: npm install
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Check production
+        env:
+          PLAYWRIGHT_BASE_URL: https://ntp-portfolio-neon.vercel.app/
+        run: npx playwright test tests/portfolio.spec.js --project=chromium-desktop --grep="loads|navigation targets exist"
 
   lighthouse:
     runs-on: ubuntu-latest
@@ -55,6 +106,7 @@ jobs:
     steps:
       - name: Run Lighthouse
         run: |
+          mkdir -p reports
           npx --yes lighthouse https://ntp-portfolio-neon.vercel.app/ \
             --output=html \
             --output=json \
@@ -71,7 +123,7 @@ jobs:
             Object.entries(report.categories).map(([key, value]) => [key, value.score ?? 0])
           );
           console.log(scores);
-          const thresholds = { performance: 0.9, accessibility: 0.95, 'best-practices': 0.95, seo: 0.95 };
+          const thresholds = { performance: 0.95, accessibility: 0.98, 'best-practices': 0.98, seo: 0.98 };
           for (const [key, min] of Object.entries(thresholds)) {
             if ((scores[key] ?? 0) < min) {
               console.error(`Lighthouse gate failed: ${key}=${scores[key]} < ${min}`);

@@ -112,7 +112,7 @@ export default function App() {
               <h1 id="hero-title">Building useful products with <span>clear code.</span></h1>
               <p className="hero-lead">{profile.intro}</p>
               <div className="hero-actions"><a className="button button-primary" href="#work">View my work <FiArrowDown aria-hidden="true" /></a><a className="button button-secondary" href={`mailto:${profile.email}`}>Let's talk <FiMail aria-hidden="true" /></a></div>
-              <div className="hero-proof" aria-label="Portfolio highlights"><div><strong>{projects.length}</strong><span>Selected projects</span></div><div><strong>Full-stack</strong><span>Frontend + backend</span></div><div><strong>2019 — 2024</strong><span>Software engineering</span></div></div>
+              <div className="hero-proof" aria-label="Portfolio highlights"><div><strong>{projects.length}</strong><span>Selected projects</span></div><div><strong>Full-stack</strong><span>Frontend + backend</span></div><div><strong>Graduated</strong><span>Software Engineering · TDTU</span></div></div>
             </div>
             <div className="hero-card reveal-scale" aria-label="Quick profile">
               <div className="portrait-wrap"><img src={avatar} alt={profile.name} className="portrait" loading="eager" fetchPriority="high" decoding="async" /></div>

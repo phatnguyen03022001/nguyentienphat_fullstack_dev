@@ -34,19 +34,21 @@ jobs:
       - name: Start preview
         run: |
           npm run preview -- --host 127.0.0.1 > /tmp/portfolio-preview.log 2>&1 &
-          node - <<'NODE'
+          node <<'NODE'
           const url = 'http://127.0.0.1:4173/';
           const deadline = Date.now() + 30000;
-          const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-          while (Date.now() < deadline) {
-            try {
-              const response = await fetch(url);
-              if (response.ok) process.exit(0);
-            } catch {}
-            await sleep(500);
-          }
-          console.error('Preview server did not become ready.');
-          process.exit(1);
+          const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+          (async () => {
+            while (Date.now() < deadline) {
+              try {
+                const response = await fetch(url);
+                if (response.ok) process.exit(0);
+              } catch {}
+              await sleep(500);
+            }
+            console.error('Preview server did not become ready.');
+            process.exit(1);
+          })();
           NODE
 
       - name: Run functional and accessibility tests
@@ -55,7 +57,7 @@ jobs:
         run: npx playwright test tests/portfolio.spec.js tests/a11y.spec.js
 
       - name: Run visual regression when baselines exist
-        if: ${{ hashFiles('tests/**-snapshots/*') != '' }}
+        if: ${{ hashFiles('tests/__screenshots__/**/*') != '' }}
         env:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
         run: npx playwright test tests/visual.spec.js
@@ -98,7 +100,7 @@ jobs:
       - name: Check production
         env:
           PLAYWRIGHT_BASE_URL: https://ntp-portfolio-neon.vercel.app/
-        run: npx playwright test tests/portfolio.spec.js --project=chromium-desktop --grep="loads|navigation targets exist"
+        run: npx playwright test tests/portfolio.spec.js --project=chromium-1440 --grep="loads|navigation targets exist"
 
   lighthouse:
     runs-on: ubuntu-latest

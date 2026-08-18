@@ -1,0 +1,165 @@
+/* Accessibility and responsive guardrails. Keep these rules separate so the visual system stays readable. */
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 4px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  border-radius: 8px;
+}
+
+#main:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .project-card:hover .project-image,
+  .button:hover,
+  .arrow-button:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-grid,
+  .about-grid,
+  .project-card-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-grid,
+  .about-grid {
+    gap: 48px;
+  }
+
+  .project-card-3 .project-image-wrap {
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+  }
+
+  .desktop-nav {
+    margin-left: 0;
+  }
+
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .topbar,
+  .footer,
+  .section {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .topbar {
+    min-height: 68px;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .topbar-actions {
+    gap: 10px;
+  }
+
+  .text-link {
+    font-size: 13px;
+  }
+
+  .section {
+    padding: 82px 0;
+  }
+
+  .hero {
+    min-height: auto;
+    padding-top: 58px;
+    padding-bottom: 58px;
+  }
+
+  .hero-actions,
+  .contact-actions,
+  .case-actions {
+    width: 100%;
+  }
+
+  .hero-actions .button,
+  .contact-actions .button,
+  .case-actions .button {
+    flex: 1 1 180px;
+  }
+
+  .hero-proof {
+    gap: 22px;
+    margin-top: 46px;
+  }
+
+  .section-heading {
+    margin-bottom: 34px;
+  }
+
+  .project-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card-3 {
+    display: block;
+  }
+
+  .skills-header,
+  .experience-grid,
+  .case-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-header {
+    display: grid;
+    align-items: start;
+    gap: 16px;
+  }
+
+  .experience-grid {
+    gap: 42px;
+  }
+
+  .timeline-item > div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .modal-backdrop {
+    padding: 12px;
+  }
+
+  .case-study {
+    max-height: 94vh;
+    border-radius: 18px;
+  }
+
+  .case-columns {
+    gap: 8px;
+  }
+
+  .footer {
+    gap: 12px;
+    min-height: 76px;
+  }
+}

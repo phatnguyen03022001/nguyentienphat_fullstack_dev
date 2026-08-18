@@ -1,32 +1,20 @@
 node_modules/
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-node_modules/
-/node_modules
-node_modules*
-/.pnp
-.pnp.js
+# Vite production output
+dist/
 
-# testing
-/coverage
+# Environment files
+.env
+.env.*
+!.env.example
 
-# production
-/build
-
-# misc
+# Local tooling
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.cache/
+coverage/
 
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# Cache
-.cache/
-**/.cache/
-**/node_modules/**/.cache/
-**/node_modules/**/*.pack
+pnpm-debug.log*

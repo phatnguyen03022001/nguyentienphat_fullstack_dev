@@ -30,7 +30,8 @@ a:focus-visible {
 
   .project-card:hover .project-image,
   .button:hover,
-  .arrow-button:hover {
+  .arrow-button:hover,
+  .hero-card:hover .portrait {
     transform: none;
   }
 }

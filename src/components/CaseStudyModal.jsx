@@ -51,9 +51,15 @@ export function CaseStudyModal({ project, reduceMotion, closeProject, closeRef }
                 Live demo <FiArrowUpRight aria-hidden="true" />
               </a>
             ) : null}
-            <a className={project.demo ? "button button-secondary" : "button button-primary"} href={project.github} target="_blank" rel="noreferrer">
-              <FiGithub aria-hidden="true" /> Source code
-            </a>
+            {project.sourcePrivate ? (
+              <span className="button button-secondary" aria-label="Private source repository, available on request">
+                <FiGithub aria-hidden="true" /> Private source · available on request
+              </span>
+            ) : (
+              <a className={project.demo ? "button button-secondary" : "button button-primary"} href={project.github} target="_blank" rel="noreferrer">
+                <FiGithub aria-hidden="true" /> Source code
+              </a>
+            )}
           </div>
         </div>
       </div>

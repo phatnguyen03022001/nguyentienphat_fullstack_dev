@@ -3,6 +3,7 @@ name: Browser Quality
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -82,9 +83,9 @@ jobs:
           path: test-results/
           if-no-files-found: ignore
 
-  production-smoke:
+  lighthouse:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -102,22 +103,33 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Install Chromium
-        run: npx playwright install --with-deps chromium
+      - name: Build
+        run: npm run build
 
-      - name: Check production
-        env:
-          PLAYWRIGHT_BASE_URL: https://ntp-portfolio-neon.vercel.app/
-        run: npx playwright test tests/portfolio.spec.js --project=chromium-1440 --grep="loads|navigation targets exist"
+      - name: Start preview
+        run: |
+          npm run preview -- --host 127.0.0.1 > /tmp/portfolio-lighthouse-preview.log 2>&1 &
+          node <<'NODE'
+          const url = 'http://127.0.0.1:4173/';
+          const deadline = Date.now() + 30000;
+          const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+          (async () => {
+            while (Date.now() < deadline) {
+              try {
+                const response = await fetch(url);
+                if (response.ok) process.exit(0);
+              } catch {}
+              await sleep(500);
+            }
+            console.error('Preview server did not become ready.');
+            process.exit(1);
+          })();
+          NODE
 
-  lighthouse:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Run Lighthouse
+      - name: Run Lighthouse against this commit
         run: |
           mkdir -p reports
-          npx --yes lighthouse https://ntp-portfolio-neon.vercel.app/ \
+          npx --yes lighthouse http://127.0.0.1:4173/ \
             --output=html \
             --output=json \
             --output-path=./reports/lighthouse \
@@ -149,3 +161,32 @@ jobs:
           name: lighthouse-report
           path: reports/
           if-no-files-found: error
+
+  production-smoke:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      - name: Pin npm
+        run: npm install --global npm@10.9.7
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Check production after deployment confirmation
+        env:
+          PLAYWRIGHT_BASE_URL: https://ntp-portfolio-neon.vercel.app/
+        run: npx playwright test tests/portfolio.spec.js --project=chromium-1440 --grep="loads|navigation targets exist"

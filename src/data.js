@@ -27,7 +27,7 @@ export const education = [
     title: "Software Engineering",
     school: "Ton Duc Thang University",
     period: "2019 — 2024",
-    description: "Built a foundation in software engineering through coursework and practical software projects.",
+    description: "Graduated in Software Engineering after completing coursework and practical software projects.",
   },
 ];
 
@@ -124,10 +124,11 @@ export const projects = [
       "PostgreSQL for managed content and application state.",
       "Better Auth, Cloudinary and Resend for owner and media workflows.",
     ],
-    evidence: ["Source code", "Production reference", "Project documentation"],
+    evidence: ["Private source — available on request", "Production demo", "Project documentation"],
     stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "PostgreSQL"],
     image: "https://opengraph.githubassets.com/1/phatnguyen03022001/muse-portfolio",
     github: "https://github.com/phatnguyen03022001/muse-portfolio",
+    sourcePrivate: true,
     demo: "https://muse-portfolio-seven.vercel.app/",
   },
   {

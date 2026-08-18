@@ -1,6 +1,6 @@
 import { FiArrowUpRight } from "react-icons/fi";
 
-export function ProjectCard({ project, index, reduceMotion, onOpen }) {
+export function ProjectCard({ project, index, onOpen }) {
   return (
     <article className={`project-card project-card-${index + 1} reveal-up`}>
       <div className="project-image-wrap">

@@ -72,40 +72,15 @@ jobs:
           })();
           NODE
 
-      - name: Generate visual baselines
+      - name: Generate visual baselines for full browser matrix
         env:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
-        run: npx playwright test tests/visual.spec.js --update-snapshots --project=chromium-1440
+        run: npx playwright test tests/visual.spec.js --update-snapshots
 
-      - name: Verify browser and accessibility gates
+      - name: Verify functional and accessibility gates
         env:
           PLAYWRIGHT_BASE_URL: http://127.0.0.1:4173/
-        run: npx playwright test tests/portfolio.spec.js tests/a11y.spec.js --project=chromium-1440
-
-      - name: Switch CI to npm ci
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-
-          replacements = {
-              '.github/workflows/browser-quality.yml': [
-                  ('npm install', 'npm ci'),
-              ],
-          }
-
-          for path, pairs in replacements.items():
-              file = Path(path)
-
-              if not file.exists():
-                  continue
-
-              text = file.read_text()
-
-              for old, new in pairs:
-                  text = text.replace(old, new)
-
-              file.write_text(text)
-          PY
+        run: npx playwright test tests/portfolio.spec.js tests/a11y.spec.js
 
       - name: Remove bootstrap workflow
         run: rm .github/workflows/one-time-quality-bootstrap.yml
@@ -118,8 +93,6 @@ jobs:
           git add \
             package-lock.json \
             tests/__screenshots__ \
-            .github/workflows/quality.yml \
-            .github/workflows/browser-quality.yml \
             .github/workflows/one-time-quality-bootstrap.yml
 
           if git diff --cached --quiet; then

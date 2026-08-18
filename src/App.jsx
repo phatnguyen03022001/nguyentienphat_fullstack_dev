@@ -114,10 +114,10 @@ export default function App() {
               <div className="hero-actions"><a className="button button-primary" href="#work">View my work <FiArrowDown aria-hidden="true" /></a><a className="button button-secondary" href={`mailto:${profile.email}`}>Let's talk <FiMail aria-hidden="true" /></a></div>
               <div className="hero-proof" aria-label="Portfolio highlights"><div><strong>{projects.length}</strong><span>Selected projects</span></div><div><strong>Full-stack</strong><span>Frontend + backend</span></div><div><strong>2019 — 2024</strong><span>Software engineering</span></div></div>
             </div>
-            <aside className="hero-card reveal-scale" aria-label="Quick profile">
+            <div className="hero-card reveal-scale" aria-label="Quick profile">
               <div className="portrait-wrap"><img src={avatar} alt={profile.name} className="portrait" loading="eager" fetchPriority="high" decoding="async" /></div>
               <div className="hero-card-body"><p className="card-label">Currently focused on</p><h2>{profile.currentFocus}</h2><div className="tag-list">{skills.slice(0, 5).map((skill) => <span key={skill}>{skill}</span>)}</div></div>
-            </aside>
+            </div>
           </div>
           <a className="scroll-cue" href="#work">Scroll to explore <FiArrowDown aria-hidden="true" /></a>
         </section>

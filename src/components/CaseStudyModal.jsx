@@ -20,6 +20,7 @@ export function CaseStudyModal({ project, reduceMotion, closeProject, closeRef }
             role="dialog"
             aria-modal="true"
             aria-labelledby="case-title"
+            aria-describedby="case-summary"
             tabIndex="-1"
             initial={reduceMotion ? false : { opacity: 0, y: 20 }}
             animate={reduceMotion ? false : { opacity: 1, y: 0 }}
@@ -32,7 +33,7 @@ export function CaseStudyModal({ project, reduceMotion, closeProject, closeRef }
             <div className="case-content">
               <div className="project-meta"><span>{project.year}</span><span>{project.tag}</span></div>
               <h2 id="case-title">{project.title}</h2>
-              <p className="case-summary">{project.summary}</p>
+              <p className="case-summary" id="case-summary">{project.summary}</p>
               <div className="case-columns">
                 <div><p className="eyebrow">The problem</p><p>{project.problem}</p></div>
                 <div><p className="eyebrow">My role</p><p>{project.role}</p></div>

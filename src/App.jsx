@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import { FiArrowDown, FiArrowUpRight, FiCheck, FiCopy, FiGithub, FiLinkedin, FiMail, FiMoon, FiSun, FiArrowUp } from "react-icons/fi";
 import { education, experience, principles, profile, projects, skills } from "./data";
 import { SectionHeading } from "./components/SectionHeading";
@@ -10,17 +9,12 @@ import avatar from "./images/avatar/avt.jpg";
 import "./styles.css";
 import "./accessibility.css";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
-
 export default function App() {
-  const reduceMotion = useReducedMotion();
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem("theme");
     return saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
+  const [reduceMotion, setReduceMotion] = useState(() => window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   const [activeProject, setActiveProject] = useState(null);
   const [copied, setCopied] = useState(false);
   const modalCloseRef = useRef(null);
@@ -30,6 +24,13 @@ export default function App() {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     localStorage.setItem("theme", dark ? "dark" : "light");
   }, [dark]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const onChange = (event) => setReduceMotion(event.matches);
+    media.addEventListener?.("change", onChange);
+    return () => media.removeEventListener?.("change", onChange);
+  }, []);
 
   useEffect(() => {
     if (!activeProject) {
@@ -90,7 +91,7 @@ export default function App() {
   };
 
   return (
-    <div className="site-shell">
+    <div className={`site-shell${reduceMotion ? " reduce-motion" : ""}`}>
       <a className="skip-link" href="#main">Skip to content</a>
 
       <header className="topbar">
@@ -105,18 +106,18 @@ export default function App() {
       <main id="main" tabIndex="-1">
         <section className="hero section" id="top" aria-labelledby="hero-title">
           <div className="hero-grid">
-            <motion.div className="hero-copy" initial={reduceMotion ? false : "hidden"} animate={reduceMotion ? false : "visible"} variants={fadeUp}>
+            <div className="hero-copy reveal-up">
               <p className="status"><span className="status-dot" aria-hidden="true" /> Available for opportunities</p>
               <p className="eyebrow">{profile.role} · {profile.location}</p>
               <h1 id="hero-title">Building useful products with <span>clear code.</span></h1>
               <p className="hero-lead">{profile.intro}</p>
               <div className="hero-actions"><a className="button button-primary" href="#work">View my work <FiArrowDown aria-hidden="true" /></a><a className="button button-secondary" href={`mailto:${profile.email}`}>Let's talk <FiMail aria-hidden="true" /></a></div>
               <div className="hero-proof" aria-label="Portfolio highlights"><div><strong>{projects.length}</strong><span>Selected projects</span></div><div><strong>Full-stack</strong><span>Frontend + backend</span></div><div><strong>2019 — 2024</strong><span>Software engineering</span></div></div>
-            </motion.div>
-            <motion.aside className="hero-card" initial={reduceMotion ? false : { opacity: 0, scale: 0.97 }} animate={reduceMotion ? false : { opacity: 1, scale: 1 }} transition={reduceMotion ? undefined : { duration: 0.65, delay: 0.15 }} aria-label="Quick profile">
+            </div>
+            <aside className="hero-card reveal-scale" aria-label="Quick profile">
               <div className="portrait-wrap"><img src={avatar} alt={profile.name} className="portrait" loading="eager" fetchPriority="high" decoding="async" /></div>
               <div className="hero-card-body"><p className="card-label">Currently focused on</p><h2>{profile.currentFocus}</h2><div className="tag-list">{skills.slice(0, 5).map((skill) => <span key={skill}>{skill}</span>)}</div></div>
-            </motion.aside>
+            </aside>
           </div>
           <a className="scroll-cue" href="#work">Scroll to explore <FiArrowDown aria-hidden="true" /></a>
         </section>

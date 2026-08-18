@@ -1,70 +1,80 @@
-# Getting Started with Create React App
+# Nguyen Tien Phat — Portfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A personal portfolio for **Nguyen Tien Phat**, a full-stack developer based in Ho Chi Minh City.
 
-## Available Scripts
+The site focuses on three things:
 
-In the project directory, you can run:
+- Clear and friendly communication
+- Real project evidence
+- A clean and maintainable frontend
 
-### `npm start`
+## What is included
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Selected project work and case-study summaries
+- About, experience and education
+- Skills and tools
+- GitHub, LinkedIn and CV links
+- Email contact flow
+- Light and dark themes
+- Responsive layout
+- Keyboard-friendly navigation
+- Reduced-motion support
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Tech stack
 
-### `npm test`
+- React 19
+- Vite 8
+- Framer Motion
+- React Icons
+- CSS with a small design system
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Project structure
 
-### `npm run build`
+```text
+src/
+├── App.jsx          # Page composition and interaction
+├── data.js          # Profile, projects and skills
+├── styles.css       # Design system and responsive styles
+├── main.jsx         # React entry point
+├── files/           # Current CV
+└── images/          # Project and profile images
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Run locally
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
+npm run dev
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Create a production build with:
 
-### `npm run eject`
+```bash
+npm run build
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Deployment
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The project is deployed through Vercel from the `main` branch. The Vercel project and deployment setup are intentionally kept unchanged while the application code is updated.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Design principles
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Keep it clear
 
-## Learn More
+The site should be easy to understand without advanced technical language.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Show real work
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Project claims should connect to a live demo, source code or a clear project explanation.
 
-### Code Splitting
+### Use motion with a reason
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Animation should support navigation and feedback. It should not distract from the content.
 
-### Analyzing the Bundle Size
+### Build for everyone
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+The UI supports keyboard focus, readable contrast, responsive layouts and reduced motion.
 
-### Making a Progressive Web App
+### Avoid unnecessary complexity
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This is a portfolio, not a product platform. The code should stay small, direct and easy to maintain.

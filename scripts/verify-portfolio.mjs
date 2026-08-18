@@ -31,10 +31,16 @@ expect(!app.includes("localhost:"), "Production source must not contain localhos
 expect(!data.includes("localhost:"), "Project data must not contain localhost URLs.");
 expect(!data.includes("http://"), "Project/profile links must use HTTPS.");
 
+const projectCount = data.match(/\bslug\s*:/g)?.length ?? 0;
+expect(projectCount > 0, "At least one selected project is required.");
+
 const requiredFields = ["problem", "solution", "challenge", "tradeoff", "outcome", "decisions", "evidence"];
 for (const field of requiredFields) {
   const occurrences = data.match(new RegExp(`\\b${field}\\s*:`, "g"))?.length ?? 0;
-  expect(occurrences >= 3, `Project content field '${field}' must exist for all selected projects.`);
+  expect(
+    occurrences === projectCount,
+    `Project content field '${field}' must exist exactly once for every selected project (${occurrences}/${projectCount}).`,
+  );
 }
 
 expect(data.includes("https://github.com/"), "GitHub proof links are missing.");
@@ -50,5 +56,5 @@ console.log("Portfolio verification passed.");
 console.log("- Metadata and production URL: OK");
 console.log("- Security/source hygiene: OK");
 console.log("- Avatar fallback guard: OK");
-console.log("- Project evidence model: OK");
+console.log(`- Project evidence model: OK (${projectCount} projects)`);
 console.log("- Runtime pinning: OK");

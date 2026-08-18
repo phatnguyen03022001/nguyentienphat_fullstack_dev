@@ -46,8 +46,14 @@ export function CaseStudyModal({ project, reduceMotion, closeProject, closeRef }
             <div className="tag-list">{project.evidence.map((item) => <span key={item}>{item}</span>)}</div>
           </div>
           <div className="case-actions">
-            <a className="button button-primary" href={project.demo} target="_blank" rel="noreferrer">Live demo <FiArrowUpRight aria-hidden="true" /></a>
-            <a className="button button-secondary" href={project.github} target="_blank" rel="noreferrer"><FiGithub aria-hidden="true" /> Source code</a>
+            {project.demo ? (
+              <a className="button button-primary" href={project.demo} target="_blank" rel="noreferrer">
+                Live demo <FiArrowUpRight aria-hidden="true" />
+              </a>
+            ) : null}
+            <a className={project.demo ? "button button-secondary" : "button button-primary"} href={project.github} target="_blank" rel="noreferrer">
+              <FiGithub aria-hidden="true" /> Source code
+            </a>
           </div>
         </div>
       </div>

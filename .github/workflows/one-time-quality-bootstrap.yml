@@ -1,20 +1,27 @@
 name: One-time quality bootstrap
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   bootstrap:
-    if: ${{ hashFiles('package-lock.json') == '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Check lockfile state
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "package-lock.json already exists."
+            echo "Bootstrap is no longer needed."
+            exit 1
+          fi
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -37,19 +44,27 @@ jobs:
       - name: Start preview
         run: |
           npm run preview -- --host 127.0.0.1 > /tmp/portfolio-preview.log 2>&1 &
+
           node <<'NODE'
           const url = 'http://127.0.0.1:4173/';
           const deadline = Date.now() + 30000;
           const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
           (async () => {
             while (Date.now() < deadline) {
               try {
                 const response = await fetch(url);
-                if (response.ok) process.exit(0);
+
+                if (response.ok) {
+                  process.exit(0);
+                }
               } catch {}
+
               await sleep(500);
             }
+
             console.error('Preview server did not become ready.');
+
             process.exit(1);
           })();
           NODE
@@ -63,6 +78,7 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+
           replacements = {
               '.github/workflows/quality.yml': [
                   ('npm install --ignore-scripts', 'npm ci --ignore-scripts'),
@@ -71,11 +87,18 @@ jobs:
                   ('npm install', 'npm ci'),
               ],
           }
+
           for path, pairs in replacements.items():
               file = Path(path)
+
+              if not file.exists():
+                  continue
+
               text = file.read_text()
+
               for old, new in pairs:
                   text = text.replace(old, new)
+
               file.write_text(text)
           PY
 
@@ -86,6 +109,18 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package-lock.json tests/__screenshots__ .github/workflows/quality.yml .github/workflows/browser-quality.yml .github/workflows/one-time-quality-bootstrap.yml
+
+          git add \
+            package-lock.json \
+            tests/__screenshots__ \
+            .github/workflows/quality.yml \
+            .github/workflows/browser-quality.yml \
+            .github/workflows/one-time-quality-bootstrap.yml
+
+          if git diff --cached --quiet; then
+            echo "No bootstrap changes to commit."
+            exit 0
+          fi
+
           git commit -m "ci: add lockfile and visual regression baselines"
           git push

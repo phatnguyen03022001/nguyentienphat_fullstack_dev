@@ -38,6 +38,11 @@ export function CaseStudyModal({ project, reduceMotion, closeProject, closeRef }
                 <div><p className="eyebrow">My role</p><p>{project.role}</p></div>
                 <div><p className="eyebrow">What I built</p><p>{project.solution}</p></div>
               </div>
+              <div className="case-columns case-columns-secondary">
+                <div><p className="eyebrow">The challenge</p><p>{project.challenge}</p></div>
+                <div><p className="eyebrow">Trade-off</p><p>{project.tradeoff}</p></div>
+                <div><p className="eyebrow">Outcome</p><p>{project.outcome}</p></div>
+              </div>
               <div className="case-decision">
                 <p className="eyebrow">Key decisions</p>
                 <ul>{project.decisions.map((decision) => <li key={decision}>{decision}</li>)}</ul>

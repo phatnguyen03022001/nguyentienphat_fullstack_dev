@@ -4,7 +4,7 @@ import { education, experience, principles, profile, projects, skills } from "./
 import { SectionHeading } from "./components/SectionHeading";
 import { ProjectCard } from "./components/ProjectCard";
 import { CaseStudyModal } from "./components/CaseStudyModal";
-import cv from "./files/NguyenTienPhat_Fresher_Fullstack_Developer.pdf";
+import cv from "./files/NguyenTienPhat_Fullstack_Developer.pdf";
 import avatar from "./images/avatar/avt.jpg";
 import "./styles.css";
 import "./accessibility.css";

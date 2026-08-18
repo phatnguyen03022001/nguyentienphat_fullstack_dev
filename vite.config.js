@@ -5,6 +5,5 @@ export default defineConfig({
   plugins: [react()],
   build: {
     target: "baseline-widely-available",
-    cssMinify: "lightningcss",
   },
 });

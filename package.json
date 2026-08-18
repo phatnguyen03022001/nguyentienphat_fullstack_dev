@@ -18,7 +18,6 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "6.0.5",
-    "framer-motion": "12.23.12",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-icons": "5.5.0",

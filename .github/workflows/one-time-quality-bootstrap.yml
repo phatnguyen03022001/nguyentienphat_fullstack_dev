@@ -33,8 +33,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
           registry-url: https://registry.npmjs.org
+
+      - name: Pin npm
+        run: npm install --global npm@10.9.7
 
       - name: Generate lockfile
         run: npm install --package-lock-only --ignore-scripts

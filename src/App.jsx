@@ -5,9 +5,10 @@ import { SectionHeading } from "./components/SectionHeading";
 import { ProjectCard } from "./components/ProjectCard";
 import { CaseStudyModal } from "./components/CaseStudyModal";
 import cv from "./files/NguyenTienPhat_Fullstack_Developer.pdf";
-import avatar from "./images/avatar/avt.jpg";
 import "./styles.css";
 import "./accessibility.css";
+
+const avatar = "https://res.cloudinary.com/diasihdzg/image/upload/v1787911067/portfolio/avatar-main2-original.jpg";
 
 export default function App() {
   const [dark, setDark] = useState(() => {

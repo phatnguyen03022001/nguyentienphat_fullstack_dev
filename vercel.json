@@ -4,9 +4,7 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "git": {
-    "deploymentEnabled": {
-      "main": false
-    }
+    "deploymentEnabled": false
   },
   "headers": [
     {

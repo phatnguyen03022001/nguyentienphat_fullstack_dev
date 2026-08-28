@@ -1,9 +1,6 @@
 name: Browser Quality
 
 on:
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -152,7 +149,7 @@ jobs:
           NODE
 
       - name: Upload Lighthouse reports
-        if: ${{ failure() || github.event_name == 'workflow_dispatch' }}
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: lighthouse-report
@@ -161,7 +158,6 @@ jobs:
           retention-days: 2
 
   production-smoke:
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

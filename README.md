@@ -42,7 +42,7 @@ src/
 ├── styles.css       # Design system and responsive styles
 ├── main.jsx         # React entry point
 ├── files/           # Current CV
-└── images/          # Project and profile images
+└── images/          # Project images used by the site
 ```
 
 ## Run locally
@@ -52,15 +52,18 @@ npm ci
 npm run dev
 ```
 
-Create a production build with:
+Verify and build with:
 
 ```bash
+npm run verify
 npm run build
 ```
 
-## Deployment
+## Release
 
-The project is deployed through Vercel from the `main` branch. Release verification should be tied to the deployed commit before a change is considered production-ready.
+`dev` is the working branch and `main` is the release branch. Git-triggered Vercel deployments are disabled, so deployment is intentional rather than automatic.
+
+Before promoting a reviewed `dev` commit to `main`, run the verification and production build locally.
 
 ## Design principles
 

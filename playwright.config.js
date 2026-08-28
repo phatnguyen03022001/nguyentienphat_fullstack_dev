@@ -21,9 +21,9 @@ export default defineConfig({
   snapshotPathTemplate: '{testDir}/__screenshots__/{projectName}/{arg}{ext}',
   use: {
     baseURL,
-    trace: 'on-first-retry',
+    trace: 'off',
     screenshot: 'only-on-failure',
-    video: 'on-first-retry',
+    video: 'off',
     colorScheme: 'light',
     locale: 'en-US',
     timezoneId: 'Asia/Ho_Chi_Minh',
